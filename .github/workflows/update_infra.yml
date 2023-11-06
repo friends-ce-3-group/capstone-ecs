@@ -1,15 +1,11 @@
-name: CI for working branch
+name: Update container image
 
-on: 
-  push:
-    paths-ignore:
-      - '.github/workflows/pr.yml'
-      - '.github/workflows/update_image.yml'
-    
+on:
+  workflow_dispatch:
+  
 env:
   AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
   AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-
 
 jobs:
 
@@ -23,7 +19,8 @@ jobs:
     steps:
         - uses: actions/checkout@v4
           with:
-            ref: ${{ github.ref }}
+            fetch-depth: 1
+            ref: main
     
         - uses: hashicorp/setup-terraform@v2
 
@@ -32,3 +29,9 @@ jobs:
 
         - name: validate
           run: terraform validate
+
+        - name: plan
+          run: terraform plan
+
+        - name: apply
+          run: terraform apply -auto-approve
