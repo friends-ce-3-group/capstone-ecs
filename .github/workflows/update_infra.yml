@@ -6,7 +6,6 @@ on:
 env:
   AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
   AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-  IMAGE_LATEST: ${{ vars.PYDBCAPSTONE_IMAGE_LATEST_TAG }}
 
 jobs:
 
@@ -35,6 +34,4 @@ jobs:
           run: terraform plan
 
         - name: apply
-          run: |
-            echo terraform apply -var 'container_image=$IMAGE_LATEST' -auto-approve
-            terraform apply -var 'container_image=$IMAGE_LATEST' -auto-approve
+          run: terraform apply -auto-approve

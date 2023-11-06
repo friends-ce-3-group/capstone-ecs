@@ -37,3 +37,5 @@ container_host_port = 5000
 alb_open_to_internet_port = 80
 
 container_name = "pydbcapstone"
+
+container_image = "255945442255.dkr.ecr.us-west-2.amazonaws.com/pydbcapstone:latest"

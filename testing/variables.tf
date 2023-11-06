@@ -47,7 +47,6 @@ variable "container_name" {
 
 variable "container_image" {
   type = string
-  default = "255945442255.dkr.ecr.us-west-2.amazonaws.com/pydbcapstone:latest"
 }
 
 variable "health_check_path" {
