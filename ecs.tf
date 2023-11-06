@@ -38,7 +38,7 @@ resource "aws_ecs_service" "main" {
   deployment_maximum_percent         = 200
   launch_type                        = "FARGATE"
   scheduling_strategy                = "REPLICA"
-  force_new_deployment               = true
+  force_new_deployment               = true # setting this to true allows container images to be updated when a new container with the same tag is pushed into ECR. applies rolling update.
 
   deployment_controller {
     type = "ECS"
