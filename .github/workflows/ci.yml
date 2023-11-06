@@ -1,0 +1,25 @@
+name: CI for working branch
+
+on: [push]
+  
+jobs:
+
+  CI:
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: ./testing
+
+    steps:
+        - uses: actions/checkout@v4
+          with:
+            ref: ${{ github.ref }}
+    
+        - uses: hashicorp/setup-terraform@v2
+
+        - name: init
+          run: terraform init
+
+        - name: validate
+          run: terraform validate
