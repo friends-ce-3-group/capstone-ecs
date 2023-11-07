@@ -35,4 +35,4 @@ jobs:
           run: terraform plan
 
         - name: apply
-          run: terraform apply -var 'container_image=$PYDBCAPSTONE_IMAGE' -auto-approve
+          run: terraform apply -var 'container_image=${{ vars.PYDBCAPSTONE_IMAGE_VER_LATEST }}' -auto-approve
