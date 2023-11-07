@@ -15,6 +15,11 @@ resource "aws_security_group" "alb" {
     to_port     = 0
     cidr_blocks = ["0.0.0.0/0"]
   }
+
+  tags = {
+    name = "${var.proj_name}-sg-alb",
+    subnet = "public"
+  }
 }
 
 resource "aws_security_group" "ecs_tasks" {
@@ -33,5 +38,10 @@ resource "aws_security_group" "ecs_tasks" {
     from_port   = 0
     to_port     = 0
     cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = {
+    name = "${var.proj_name}-sg-task",
+    subnet = "private"
   }
 }

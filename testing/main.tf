@@ -29,7 +29,7 @@ module "vpc_network" {
 module "ecs_services" {
   source = "../"
 
-  proj_name = "${var.proj_name}-ecs"
+  proj_name = var.proj_name
 
   container_image = var.container_image
 
