@@ -9,6 +9,8 @@ resource "aws_ecs_task_definition" "main" {
   cpu                      = 1024
   memory                   = 3072
   execution_role_arn       = aws_iam_role.ecs_task_execution_role.arn
+  skip_destroy             = true
+
   # task_role_arn            = aws_iam_role.ecs_task_role.arn
   container_definitions = <<DEFINITION
   [

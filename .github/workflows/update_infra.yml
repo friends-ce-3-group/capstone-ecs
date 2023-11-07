@@ -6,6 +6,7 @@ on:
 env:
   AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
   AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+  PYDBCAPSTONE_IMAGE: ${{ vars.PYDBCAPSTONE_IMAGE_VER_LATEST }}
 
 jobs:
 
@@ -34,4 +35,4 @@ jobs:
           run: terraform plan
 
         - name: apply
-          run: terraform apply -auto-approve
+          run: terraform apply -var 'container_image=$PYDBCAPSTONE_IMAGE' -auto-approve
