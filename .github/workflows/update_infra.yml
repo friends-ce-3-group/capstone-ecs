@@ -1,4 +1,4 @@
-name: Update container image
+name: Update ECS services
 
 on:
   workflow_dispatch:
