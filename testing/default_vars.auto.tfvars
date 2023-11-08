@@ -1,5 +1,7 @@
 proj_name = "friends-capstone-ecs"
 
+proj_name_root = "friends-capstone"
+
 vpc_cidr = "30.0.0.0/16"
 
 region = "us-west-2"

@@ -2,6 +2,10 @@ variable "proj_name" {
   type = string
 }
 
+variable "proj_name_root" {
+  type = string
+}
+
 variable "vpc_cidr" {
   type = string
 }
