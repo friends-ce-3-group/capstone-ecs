@@ -33,14 +33,15 @@ resource "aws_iam_policy" "rds" {
 }
 
 resource "aws_iam_role_policy_attachment" "attach_rds" {
+  for_each = toset([
+    aws_iam_policy.rds.arn,
+    "arn:aws:iam::aws:policy/AmazonRDSDataFullAccess"
+  ])
   role       = aws_iam_role.ecs_task_role.name
-  policy_arn = aws_iam_policy.rds.arn
+  policy_arn = each.value
 }
 
 
-# # --------------------------------------------------------------------------
-# # --------------------------------------------------------------------------
-# # --------------------------------------------------------------------------
 # # --------------------------------------------------------------------------
 
 data "aws_iam_policy_document" "ecs_task_exec_assume_role" {
@@ -65,3 +66,5 @@ resource "aws_iam_role_policy_attachment" "ecs-task-execution-role-policy-attach
   role       = aws_iam_role.ecs_task_execution_role.name
   policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
 }
+
+# # --------------------------------------------------------------------------
