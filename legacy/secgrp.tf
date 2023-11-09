@@ -17,7 +17,7 @@ resource "aws_security_group" "alb" {
   }
 
   tags = {
-    name = "${var.proj_name}-sg-alb",
+    name   = "${var.proj_name}-sg-alb",
     subnet = "public"
   }
 }
@@ -41,7 +41,7 @@ resource "aws_security_group" "ecs_tasks" {
   }
 
   tags = {
-    name = "${var.proj_name}-sg-task",
+    name   = "${var.proj_name}-sg-task",
     subnet = "private"
   }
 }

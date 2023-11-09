@@ -2,7 +2,7 @@ variable "proj_name" {
   type = string
 }
 
-variable "vpc_id" {
+variable "proj_name_root" {
   type = string
 }
 
@@ -10,9 +10,9 @@ variable "vpc_id" {
 #   type = string
 # }
 
-# variable "region" {
-#   type = string
-# }
+variable "region" {
+  type = string
+}
 
 # variable "enable_dns_hostnames" {
 #   type = bool
@@ -26,14 +26,14 @@ variable "vpc_id" {
 #   type = bool
 # }
 
-# variable "public_subnets" {
+# variable "subnets_public" {
 #   type = map(object({
 #     cidr_block        = string
 #     availability_zone = string
 #   }))
 # }
 
-# variable "pvt_subnets" {
+# variable "subnets_private" {
 #   type = map(object({
 #     cidr_block        = string
 #     availability_zone = string
@@ -41,7 +41,8 @@ variable "vpc_id" {
 # }
 
 variable "container_host_port" {
-  type = number
+  type        = number
+  description = "the port on host machines that is mapped to the container port i.e. -p <container_host_port>:<container_app_port>"
 }
 
 variable "container_name" {
@@ -49,7 +50,8 @@ variable "container_name" {
 }
 
 variable "container_image" {
-  type = string
+  type    = string
+  default = "255945442255.dkr.ecr.us-west-2.amazonaws.com/pydbcapstone:latest"
 }
 
 variable "health_check_path" {
@@ -57,13 +59,6 @@ variable "health_check_path" {
 }
 
 variable "alb_open_to_internet_port" {
-  type = number
-}
-
-variable "subnets_private" {
-  type = list(string)
-}
-
-variable "subnets_public" {
-  type = list(string)
+  type        = number
+  description = "the port that the ALB is listening on"
 }
