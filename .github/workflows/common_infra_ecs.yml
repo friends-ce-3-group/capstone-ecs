@@ -1,4 +1,4 @@
-name: Deploy ECS Common Infra
+name: ECS Common Infra Deployment
 
 on:
   workflow_dispatch:
