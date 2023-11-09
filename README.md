@@ -8,7 +8,7 @@ This repo contains the following modules:
 | mod_service | A module for deploying a service within the ECS cluster. This module creates the ECS task definition, ECS service, target group (of the running tasks), security group for the running tasks, an ALB port listener to expose the service, and also the ECS IAM task execution and task roles and their attached policies.
 
 
-# How to deploy resources using this repo
+## How to deploy resources using this repo
 
 First set up the common infrastructure by running `terraform init/validate/apply` from deployment/common. Or run the GitHub workflow common_infra_ecs.yml.
 
