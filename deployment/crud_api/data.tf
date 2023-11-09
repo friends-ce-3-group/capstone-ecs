@@ -1,3 +1,6 @@
+# This file probably doesn't need to be customised for each ECS service.
+# They refer to the common resources that are shared for all services.
+
 data "aws_vpcs" "vpc" {
   tags = {
     Name = "${var.proj_name}-*"
