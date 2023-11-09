@@ -33,8 +33,8 @@ resource "aws_ecs_service" "service" {
   cluster                            = var.ecs_cluster_id
   task_definition                    = aws_ecs_task_definition.service.arn
   desired_count                      = var.desired_count
-  deployment_minimum_healthy_percent = var.deployment_minimum_healthy_percent # 50
-  deployment_maximum_percent         = var.deployment_maximum_percent         # 200
+  deployment_minimum_healthy_percent = var.deployment_minimum_healthy_percent 
+  deployment_maximum_percent         = var.deployment_maximum_percent         
   launch_type                        = "FARGATE"
   scheduling_strategy                = "REPLICA"
   force_new_deployment               = true # setting this to true allows container images to be updated when a new container with the same tag is pushed into ECR. applies rolling update.
@@ -44,11 +44,9 @@ resource "aws_ecs_service" "service" {
   }
 
   network_configuration {
-    security_groups  = [aws_security_group.ecs_tasks.id] # [aws_security_group.ecs_tasks.id]
-    subnets          = var.subnets                       # var.subnets_private
+    security_groups  = [aws_security_group.ecs_tasks.id] 
+    subnets          = var.subnets                       
     assign_public_ip = true
-
-    # subnets          = [for subnet in module.test_network.subnets_private : subnet.id]
   }
 
   load_balancer {

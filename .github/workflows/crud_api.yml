@@ -43,7 +43,7 @@ jobs:
         - name: apply or destroy
           run: |
             if [ ${{ github.event.inputs.deployment }} == 'Apply' ]; then  
-              terraform apply -auto-approve
+              terraform apply -var 'container_image=${{ vars.PYDBCAPSTONE_IMAGE_VER_LATEST }}' -auto-approve
             elif [ ${{ github.event.inputs.deployment }} == 'Destroy' ]; then  
               terraform destroy -auto-approve
             fi
