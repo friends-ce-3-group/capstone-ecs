@@ -40,7 +40,7 @@ jobs:
         - name: plan
           run: terraform plan
 
-        - name: Setup or TearDown
+        - name: apply or destroy
           run: |
             if [ ${{ github.event.inputs.deployment }} == 'Apply' ]; then  
               terraform apply -auto-approve
