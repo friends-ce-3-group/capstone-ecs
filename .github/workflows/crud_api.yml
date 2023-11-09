@@ -1,4 +1,4 @@
-name: ECS Common Infra Deployment
+name: ECS CRUD APIs
 
 on:
   workflow_dispatch:
@@ -22,7 +22,7 @@ jobs:
 
     defaults:
       run:
-        working-directory: ./deployment/common
+        working-directory: ./deployment/crud_api
 
     steps:
         - uses: actions/checkout@v4
