@@ -1,5 +1,6 @@
 # This file probably doesn't need to be customised for each ECS service.
 # They refer to the common resources that are shared for all services.
+# TODO: try to share this file among deployments
 
 data "aws_vpcs" "vpc" {
   tags = {
