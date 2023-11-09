@@ -52,7 +52,7 @@ data "aws_ecs_cluster" "ecs_cluster" {
 
 data "aws_security_group" "alb_security_group" {
   tags = {
-    name = "${var.proj_name}-ecs-shared-sg",
+    name    = "${var.proj_name}-ecs-shared-sg",
     project = "${var.proj_name}"
   }
 }

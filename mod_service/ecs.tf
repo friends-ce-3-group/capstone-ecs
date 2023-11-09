@@ -45,7 +45,7 @@ resource "aws_ecs_service" "service" {
 
   network_configuration {
     security_groups  = [aws_security_group.ecs_tasks.id] # [aws_security_group.ecs_tasks.id]
-    subnets          = var.subnets         # var.subnets_private
+    subnets          = var.subnets                       # var.subnets_private
     assign_public_ip = true
 
     # subnets          = [for subnet in module.test_network.subnets_private : subnet.id]
