@@ -28,25 +28,25 @@
 
 
 
-module "ecs_services" {
-  source = "../"
+# module "ecs_services" {
+#   source = "../"
 
-  proj_name = var.proj_name
+#   proj_name = var.proj_name
 
-  container_image = var.container_image
+#   container_image = var.container_image
 
-  container_name = var.container_name
+#   container_name = var.container_name
 
-  container_host_port = var.container_host_port
+#   container_host_port = var.container_host_port
 
-  alb_open_to_internet_port = var.alb_open_to_internet_port
+#   alb_open_to_internet_port = var.alb_open_to_internet_port
 
-  # vpc_id = module.vpc_network.vpc_id
-  vpc_id = local.vpc_id_found
+#   # vpc_id = module.vpc_network.vpc_id
+#   vpc_id = local.vpc_id_found
 
-  subnets_private = data.aws_subnets.pvt_subnets.ids
+#   subnets_private = data.aws_subnets.pvt_subnets.ids
 
-  subnets_public = data.aws_subnets.pub_subnets.ids
+#   subnets_public = data.aws_subnets.pub_subnets.ids
 
-  # depends_on = [module.vpc_network]
-}
+#   # depends_on = [module.vpc_network]
+# }
