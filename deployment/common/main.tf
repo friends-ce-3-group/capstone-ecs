@@ -1,5 +1,5 @@
 module "ecs_shared_infra" {
-  source = "../../common"
+  source = "../../mod_common"
 
   resource_grp_name = var.resource_grp_name
 

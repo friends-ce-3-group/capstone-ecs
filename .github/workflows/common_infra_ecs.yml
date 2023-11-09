@@ -22,7 +22,7 @@ jobs:
 
     defaults:
       run:
-        working-directory: ./deployment/common
+        working-directory: ./deployment/mod_common
 
     steps:
         - uses: actions/checkout@v4
