@@ -6,9 +6,9 @@ module "crud_api" {
     proj_name = var.proj_name
 
     # Container
-    container_image = "255945442255.dkr.ecr.us-west-2.amazonaws.com/pydbcapstone:latest"
-    container_name = "pydbcapstone"
-    service_app_port = 5000
+    container_image = var.container_image
+    container_name = var.container_name
+    service_app_port = var.service_app_port
 
     # Service settings
     desired_count = 4
