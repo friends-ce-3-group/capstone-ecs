@@ -12,7 +12,8 @@ variable "ecs_task_policies_arn" {
   type = list(string)
   default = [
     "arn:aws:iam::aws:policy/AmazonRDSDataFullAccess",
-    "arn:aws:iam::aws:policy/AmazonRDSFullAccess"
+    "arn:aws:iam::aws:policy/AmazonRDSFullAccess",
+    "arn:aws:iam::aws:policy/AmazonS3FullAccess"
   ]
 }
 
