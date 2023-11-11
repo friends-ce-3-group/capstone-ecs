@@ -22,3 +22,33 @@ variable "region" {
   type        = string
   description = "Name of the region to host this container e.g. us-west-2"
 }
+
+variable "resource_s3_images_bucket_name" {
+  type        = string
+  description = "Name of the s3 bucket which contains our images e.g. friends-capstone-infra-s3-images"
+}
+
+variable "ecs_cluster_arn" {
+  type        = string
+  description = "arn of the ECS cluster"
+}
+
+#variable "ecs_task_role" {
+#  type        = string
+#  description = "task role of the ecs task"
+#}
+
+variable "private_subnets" {
+  type        = list(string)
+  description = "private subnets to run ecs tasks within"
+}
+
+variable "ecs_task_role_arn" {
+  type        = string
+  description = "task role arn for ecs tasks to use"
+}
+
+variable "ecs_task_execution_role_arn" {
+  type        = string
+  description = "execution role arn for ecs tasks to use"
+}
