@@ -15,7 +15,8 @@ resource "aws_cloudwatch_event_rule" "invoke_thumbnails_creation" {
 resource "aws_cloudwatch_event_target" "event_target" {
   arn      = var.ecs_cluster_arn
   rule     = aws_cloudwatch_event_rule.invoke_thumbnails_creation.name
-  role_arn = "arn:aws:iam::255945442255:role/service-role/Amazon_EventBridge_Invoke_ECS_838602944_todelete" //[TODO] Create our own iam role
+  //role_arn = "arn:aws:iam::255945442255:role/service-role/Amazon_EventBridge_Invoke_ECS_838602944_todelete" //[TODO] Create our own iam role
+  role_arn = aws_iam_role.eventbridge_invoke_ecs_task_role.arn
 
   ecs_target {
     launch_type         = "FARGATE"
@@ -26,7 +27,6 @@ resource "aws_cloudwatch_event_target" "event_target" {
       subnets = var.private_subnets
       assign_public_ip = true
     }
-
   }
 
   input_transformer {

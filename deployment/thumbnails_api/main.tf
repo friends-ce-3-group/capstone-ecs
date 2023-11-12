@@ -2,6 +2,7 @@ module "thumbnails_api" {
   source = "../../mod_thumbnails"
 
   # Naming
+  proj_name                      = var.proj_name
   resource_grp_name              = var.resource_grp_name
   resource_s3_images_bucket_name = var.image_bucket_name
 

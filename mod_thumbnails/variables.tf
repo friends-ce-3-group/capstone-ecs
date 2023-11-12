@@ -3,6 +3,11 @@ variable "resource_grp_name" {
   description = "Give a name to the resource group e.g. friends-capstone-vpc"
 }
 
+variable "proj_name" {
+  type        = string
+  description = "Give a name to the parent project of the resource group e.g. friends-capstone"
+}
+
 variable "container_image" {
   type        = string
   description = "Full URI to the container image e.g. 255945442255.dkr.ecr.us-west-2.amazonaws.com/pydbcapstone:latest"
