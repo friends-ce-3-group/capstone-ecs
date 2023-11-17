@@ -7,6 +7,9 @@ resource "aws_cloudwatch_event_rule" "invoke_thumbnails_creation" {
     detail : {
       bucket : {
         name : ["${var.resource_s3_images_bucket_name}"]
+      },
+      object : {
+        key : [{ "prefix" : "originals/" }]
       }
     }
   }))
@@ -18,12 +21,12 @@ resource "aws_cloudwatch_event_target" "event_target" {
   role_arn = aws_iam_role.eventbridge_invoke_ecs_task_role.arn
 
   ecs_target {
-    launch_type         = "FARGATE"
-    task_count          = 1
-    task_definition_arn = aws_ecs_task_definition.thumbnails.arn
+    launch_type             = "FARGATE"
+    task_count              = 1
+    task_definition_arn     = aws_ecs_task_definition.thumbnails.arn
     enable_ecs_managed_tags = true
     network_configuration {
-      subnets = var.private_subnets
+      subnets          = var.private_subnets
       assign_public_ip = true
     }
   }
