@@ -18,9 +18,9 @@ data "aws_iam_policy_document" "ecs_task_exec_assume_role" {
 
 data "aws_iam_policy_document" "log_policy_document" {
   statement {
-    actions = ["logs:CreateLogGroup"]
-    effect = "Allow"
-    resources = [ "arn:aws:logs:*:*:*" ]
+    actions   = ["logs:CreateLogGroup"]
+    effect    = "Allow"
+    resources = ["arn:aws:logs:*:*:*"]
   }
 }
 
@@ -39,7 +39,7 @@ resource "aws_iam_role_policy_attachment" "ecs-task-execution-role-policy-attach
 }
 
 resource "aws_iam_role_policy_attachment" "ecs-task-execution-role-policy-attachment_for_logcreation" {
-  role = aws_iam_role.thumbnails_ecs_task_execution_role.name
+  role       = aws_iam_role.thumbnails_ecs_task_execution_role.name
   policy_arn = aws_iam_policy.log_policy.arn
 }
 
@@ -52,24 +52,24 @@ resource "aws_iam_role_policy_attachment" "ecs-task-execution-role-policy-attach
 
 data "aws_iam_policy_document" "eventbridge_invoke_ecs_task_policy_document" {
   statement {
-    effect = "Allow"
-    actions = ["ecs:RunTask"]
+    effect    = "Allow"
+    actions   = ["ecs:RunTask"]
     resources = [aws_ecs_task_definition.thumbnails.arn]
     condition {
-      test = "ArnLike"
+      test     = "ArnLike"
       variable = "ecs:cluster"
-      values = [ var.ecs_cluster_arn ]
+      values   = [var.ecs_cluster_arn]
     }
   }
 
   statement {
-    effect = "Allow"
-    actions = ["iam:PassRole"]
+    effect    = "Allow"
+    actions   = ["iam:PassRole"]
     resources = ["*"]
     condition {
-      test = "StringLike"
+      test     = "StringLike"
       variable = "iam:PassedToService"
-      values = [ "ecs-tasks.amazonaws.com" ]
+      values   = ["ecs-tasks.amazonaws.com"]
     }
   }
 }
