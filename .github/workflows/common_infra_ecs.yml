@@ -29,6 +29,12 @@ jobs:
           with:
             fetch-depth: 1
     
+        - uses: cschleiden/replace-tokens@v1
+          with:
+            files: '["**/.env"]'
+          env:
+            AWSACCOUNTID: ${{ secrets.AWS_ACCOUNT_ID }}
+
         - uses: hashicorp/setup-terraform@v2
 
         - name: init
