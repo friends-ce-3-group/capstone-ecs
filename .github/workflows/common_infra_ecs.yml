@@ -31,7 +31,7 @@ jobs:
     
         - uses: cschleiden/replace-tokens@v1
           with:
-            files: '["**/.env"]'
+            files: '["${{ github.workspace }}/mod_common/alb.tf"]'
           env:
             AWSACCOUNTID: ${{ secrets.AWS_ACCOUNT_ID }}
 
