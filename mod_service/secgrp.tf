@@ -1,11 +1,11 @@
-resource "aws_security_group_rule" "ingress_at_alb" {
-  type              = "ingress"
-  protocol          = "tcp"
-  from_port         = var.service_app_port
-  to_port           = var.service_app_port
-  security_group_id = var.alb_security_group_id
-  cidr_blocks       = ["0.0.0.0/0"]
-}
+# resource "aws_security_group_rule" "ingress_at_alb" {
+#   type              = "ingress"
+#   protocol          = "tcp"
+#   from_port         = var.service_app_port
+#   to_port           = var.service_app_port
+#   security_group_id = var.alb_security_group_id
+#   cidr_blocks       = ["0.0.0.0/0"]
+# }
 
 resource "aws_security_group" "ecs_tasks" {
   name   = "${var.resource_grp_name}-sg-ecstask"

@@ -17,3 +17,14 @@ variable "vpc_id" {
   type        = string
   description = "VPC ID of the VPC that the ALB belongs to"
 }
+
+variable "service_app_port" {
+  type        = number
+  default     = 5000
+  description = "This port number applies to the container internal port, container host port, security groups connection between the ALB and ECS task, and ALB listening port for the service"
+}
+
+variable "cloudfront_cidr_blocks" {
+  type = list(string)
+  description = "Cidr ranges for Cloudfront in the region"
+}

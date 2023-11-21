@@ -8,4 +8,6 @@ module "ecs_shared_infra" {
   subnets = data.aws_subnets.pub_subnets.ids
 
   vpc_id = local.vpc_id_found
+
+  cloudfront_cidr_blocks = data.aws_prefix_list.cloudfront.cidr_blocks
 }
