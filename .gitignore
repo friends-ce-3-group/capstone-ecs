@@ -35,3 +35,5 @@ terraform.rc
 
 # for testing
 !/testing/*.auto.tfvars
+
+archive.zip
