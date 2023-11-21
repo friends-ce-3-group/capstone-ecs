@@ -17,9 +17,9 @@ resource "aws_lb" "common" {
     project = "${var.proj_name}"
   }
 
-  depends_on = [ 
-    aws_s3_bucket.alb_log, 
-    aws_s3_bucket_policy.allow_alb_logging 
+  depends_on = [
+    aws_s3_bucket.alb_log,
+    aws_s3_bucket_policy.allow_alb_logging
   ]
 }
 
@@ -27,7 +27,7 @@ resource "aws_s3_bucket" "alb_log" {
   bucket = "${var.resource_grp_name}-alb-log"
 
   tags = {
-    name        = "${var.resource_grp_name}-alb-log"
+    name      = "${var.resource_grp_name}-alb-log"
     proj_name = var.proj_name
   }
 }
@@ -50,7 +50,7 @@ data "aws_iam_policy_document" "allow_alb_logging" {
     actions = ["s3:PutObject"]
 
     # See https://docs.aws.amazon.com/elasticloadbalancing/latest/application/enable-access-logging.html
-    resources = ["${aws_s3_bucket.alb_log.arn}/AWSLogs/255945442255/*"] 
+    resources = ["${aws_s3_bucket.alb_log.arn}/AWSLogs/#{AWSACCOUNTID}#/*"]
   }
 }
 

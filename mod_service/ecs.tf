@@ -38,7 +38,7 @@ resource "aws_ecs_task_definition" "service" {
 
 locals {
   ecs_service_name = "${var.resource_grp_name}-service"
-  log_group_name = "/ecs/${var.ecs_cluster_name}/${var.resource_grp_name}-service"
+  log_group_name   = "/ecs/${var.ecs_cluster_name}/${var.resource_grp_name}-service"
 }
 
 resource "aws_ecs_service" "service" {
@@ -46,8 +46,8 @@ resource "aws_ecs_service" "service" {
   cluster                            = var.ecs_cluster_id
   task_definition                    = aws_ecs_task_definition.service.arn
   desired_count                      = var.desired_count
-  deployment_minimum_healthy_percent = var.deployment_minimum_healthy_percent 
-  deployment_maximum_percent         = var.deployment_maximum_percent         
+  deployment_minimum_healthy_percent = var.deployment_minimum_healthy_percent
+  deployment_maximum_percent         = var.deployment_maximum_percent
   launch_type                        = "FARGATE"
   scheduling_strategy                = "REPLICA"
   force_new_deployment               = true # setting this to true allows container images to be updated when a new container with the same tag is pushed into ECR. applies rolling update.
@@ -57,8 +57,8 @@ resource "aws_ecs_service" "service" {
   }
 
   network_configuration {
-    security_groups  = [aws_security_group.ecs_tasks.id] 
-    subnets          = var.subnets                       
+    security_groups  = [aws_security_group.ecs_tasks.id]
+    subnets          = var.subnets
     assign_public_ip = true
   }
 
@@ -79,7 +79,7 @@ resource "aws_cloudwatch_log_group" "service_log_group" {
   name = local.log_group_name
 
   tags = {
-    name = "${var.resource_grp_name}-service-logs"
+    name      = "${var.resource_grp_name}-service-logs"
     proj_name = var.proj_name
   }
 }

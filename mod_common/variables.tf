@@ -25,6 +25,6 @@ variable "service_app_port" {
 }
 
 variable "cloudfront_cidr_blocks" {
-  type = list(string)
+  type        = list(string)
   description = "Cidr ranges for Cloudfront in the region"
 }
