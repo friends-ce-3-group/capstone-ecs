@@ -94,3 +94,8 @@ variable "cpu_usage_scaling_trigger" {
   type        = number
   description = "If the average cpu usage rises over this percentage, the service will spin up more tasks to work (up to the defined max count). And if the utilization is constantly below the target, the service will deregister tasks (down to the defined min count)"
 }
+
+variable "region" {
+  type        = string
+  description = "Name of the region to host this container e.g. us-west-2"
+}

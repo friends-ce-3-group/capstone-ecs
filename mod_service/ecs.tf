@@ -22,7 +22,15 @@ resource "aws_ecs_task_definition" "service" {
           "containerPort":${var.service_app_port},
           "hostPort":${var.service_app_port}
         }
-      ]
+      ],
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-group": "${aws_cloudwatch_log_group.service_log_group.name}",
+          "awslogs-region": "${var.region}",
+          "awslogs-stream-prefix": "${var.resource_grp_name}-service"
+        }
+      }
     }
   ]
   DEFINITION
@@ -58,4 +66,14 @@ resource "aws_ecs_service" "service" {
   # lifecycle {
   #   ignore_changes = [task_definition, desired_count]
   # }
+}
+
+
+resource "aws_cloudwatch_log_group" "service_log_group" {
+  name = "/ecs/${var.ecs_cluster_name}/${aws_ecs_service.service.name}"
+
+  tags = {
+    name = "${var.resource_grp_name}-service-logs"
+    proj_name = var.proj_name
+  }
 }
