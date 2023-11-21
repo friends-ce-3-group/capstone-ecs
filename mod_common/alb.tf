@@ -7,8 +7,54 @@ resource "aws_lb" "common" {
 
   enable_deletion_protection = false
 
+  access_logs {
+    bucket  = aws_s3_bucket.alb_log.id
+    enabled = true
+  }
+
   tags = {
     name    = "${var.resource_grp_name}-alb",
     project = "${var.proj_name}"
   }
+
+  depends_on = [ 
+    aws_s3_bucket.alb_log, 
+    aws_s3_bucket_policy.allow_alb_logging 
+  ]
+}
+
+resource "aws_s3_bucket" "alb_log" {
+  bucket = "${var.resource_grp_name}-alb-log"
+
+  tags = {
+    name        = "${var.resource_grp_name}-alb-log"
+    proj_name = var.proj_name
+  }
+}
+
+locals {
+  elb_account_id = "797873946194" # US West (Oregon). See https://docs.aws.amazon.com/elasticloadbalancing/latest/application/enable-access-logging.html
+}
+
+
+# See https://docs.aws.amazon.com/elasticloadbalancing/latest/application/enable-access-logging.html
+data "aws_iam_policy_document" "allow_alb_logging" {
+  statement {
+    effect = "Allow"
+
+    principals {
+      type        = "AWS"
+      identifiers = ["arn:aws:iam::${local.elb_account_id}:root"]
+    }
+
+    actions = ["s3:PutObject"]
+
+    # See https://docs.aws.amazon.com/elasticloadbalancing/latest/application/enable-access-logging.html
+    resources = ["${aws_s3_bucket.alb_log.arn}/AWSLogs/255945442255/*"] 
+  }
+}
+
+resource "aws_s3_bucket_policy" "allow_alb_logging" {
+  bucket = aws_s3_bucket.alb_log.id
+  policy = data.aws_iam_policy_document.allow_alb_logging.json
 }
