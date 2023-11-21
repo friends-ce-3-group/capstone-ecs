@@ -36,8 +36,13 @@ resource "aws_ecs_task_definition" "service" {
   DEFINITION
 }
 
+locals {
+  ecs_service_name = "${var.resource_grp_name}-service"
+  log_group_name = "/ecs/${var.ecs_cluster_name}/${var.resource_grp_name}-service"
+}
+
 resource "aws_ecs_service" "service" {
-  name                               = "${var.resource_grp_name}-service"
+  name                               = local.ecs_service_name
   cluster                            = var.ecs_cluster_id
   task_definition                    = aws_ecs_task_definition.service.arn
   desired_count                      = var.desired_count
@@ -69,8 +74,9 @@ resource "aws_ecs_service" "service" {
 }
 
 
+
 resource "aws_cloudwatch_log_group" "service_log_group" {
-  name = "/ecs/${var.ecs_cluster_name}/${aws_ecs_service.service.name}"
+  name = local.log_group_name
 
   tags = {
     name = "${var.resource_grp_name}-service-logs"

@@ -32,3 +32,8 @@ variable "service_app_port" {
   default     = 5000
   description = "This port number applies to the container internal port, container host port, security groups connection between the ALB and ECS task, and ALB listening port for the service"
 }
+
+variable "region" {
+  type = string
+  default = "us-west-2"
+}

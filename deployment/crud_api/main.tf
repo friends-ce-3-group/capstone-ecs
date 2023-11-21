@@ -1,6 +1,9 @@
 module "crud_api" {
   source = "../../mod_service"
 
+  # region
+  region = var.region
+
   # Naming
   resource_grp_name = var.resource_grp_name
   proj_name         = var.proj_name
@@ -33,5 +36,4 @@ module "crud_api" {
 
   # IAM policies to attach to task
   ecs_task_policies_arn = var.ecs_task_policies_arn
-
 }
