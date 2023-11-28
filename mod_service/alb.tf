@@ -7,7 +7,7 @@ resource "aws_alb_target_group" "service" {
 
   health_check {
     healthy_threshold   = "2"
-    interval            = "30"
+    interval            = "120"
     protocol            = "HTTP"
     matcher             = "200"
     timeout             = "3"
