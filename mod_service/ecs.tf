@@ -78,6 +78,8 @@ resource "aws_ecs_service" "service" {
 resource "aws_cloudwatch_log_group" "service_log_group" {
   name = local.log_group_name
 
+  retention_in_days = 0
+
   tags = {
     name      = "${var.resource_grp_name}-service-logs"
     proj_name = var.proj_name
