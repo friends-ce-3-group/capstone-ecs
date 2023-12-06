@@ -28,7 +28,7 @@ Parameters:
   SecurityGroupID:
     Type: String
     Description: Enter the security group ID for running the CloudWatch agent ECS task
-  Subnet1ID:
+  SubnetID:
     Type: String
     Description: Enter the subnet ID for running the CloudWatch agent ECS task
 Conditions:
