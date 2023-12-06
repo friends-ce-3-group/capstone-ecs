@@ -23,6 +23,9 @@ resource "aws_ecs_task_definition" "service" {
           "hostPort":${var.service_app_port}
         }
       ],
+      "dockerLabels": {
+          "ECS_PROMETHEUS_EXPORTER_PORT":${var.service_app_port},
+      },
       "logConfiguration": {
         "logDriver": "awslogs",
         "options": {
