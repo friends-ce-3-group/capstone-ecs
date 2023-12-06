@@ -74,7 +74,7 @@ Resources:
                   "sd_result_file": "/tmp/cwagent_ecs_auto_sd.yaml",
                   "docker_label": {
                     "sd_port_label": "ECS_PROMETHEUS_EXPORTER_PORT",
-                    "sd_metrics_path_label":"PROMETHEUS_METRICS_PATH_LABEL"
+                    "sd_metrics_path_label":"ECS_PROMETHEUS_METRICS_PATH"
                     "sd_job_name_label": "ECS_PROMETHEUS_JOB_NAME"
                   },
                   "task_definition_list": [
