@@ -1,0 +1,204 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: This template sets up the configuration and tasks necessary to collect Prometheus metrics via the CloudWatch agent for Prometheus 
+
+Parameters:
+  ECSClusterName:
+    Type: String
+    Description: Enter the name of your ECS cluster from which you want to collect Prometheus metrics
+  CreateIAMRoles:
+    Type: String
+    AllowedValues:
+      - 'True'
+      - 'False'
+    Description: Whether to create new IAM roles or using existing IAM roles for the ECS tasks
+    ConstraintDescription: must specified, either True or False
+  ECSLaunchType:
+    Type: String
+    AllowedValues:
+      - 'EC2'
+      - 'FARGATE'
+    Description: ECS launch type for the ECS cluster
+    ConstraintDescription: must specified, either EC2 or FARGATE
+  TaskRoleName:
+    Type: String
+    Description: Enter the CloudWatch agent ECS task role name
+  ExecutionRoleName:
+    Type: String
+    Description: Enter the CloudWatch agent ECS execution role name
+  SecurityGroupID:
+    Type: String
+    Description: Enter the security group ID for running the CloudWatch agent ECS task
+  Subnet1ID:
+    Type: String
+    Description: Enter the subnet ID for running the CloudWatch agent ECS task
+Conditions:
+  CreateRoles:
+    !Equals [!Ref CreateIAMRoles, 'True']
+  AssignPublicIp:
+    !Equals [!Ref ECSLaunchType, 'FARGATE']
+Resources:
+  PrometheusConfigSSMParameter:
+    Type: AWS::SSM::Parameter
+    Properties:
+      Name: !Sub 'AmazonCloudWatch-PrometheusConfigName-${ECSClusterName}-${ECSLaunchType}-awsvpc'
+      Type: String
+      Tier: Standard
+      Description: !Sub 'Prometheus Scraping SSM Parameter for ECS Cluster: ${ECSClusterName}'
+      Value: |-
+        global:
+          scrape_interval: 1m
+          scrape_timeout: 10s
+        scrape_configs:
+          - job_name: cwagent-ecs-file-sd-config
+            sample_limit: 10000
+            file_sd_configs:
+              - files: [ "/tmp/cwagent_ecs_auto_sd.yaml" ]
+  CWAgentConfigSSMParameter:
+    Type: AWS::SSM::Parameter
+    Properties:
+      Name: !Sub 'AmazonCloudWatch-CWAgentConfig-${ECSClusterName}-${ECSLaunchType}-awsvpc'
+      Type: String
+      Tier: Intelligent-Tiering
+      Description: !Sub 'CWAgent SSM Parameter with App Mesh and Java EMF Definition for ECS Cluster: ${ECSClusterName}'
+      Value: |-
+        {
+          "agent": {
+            "debug": true
+          },
+          "logs": {
+            "metrics_collected": {
+              "prometheus": {
+                "prometheus_config_path": "env:PROMETHEUS_CONFIG_CONTENT",
+                "ecs_service_discovery": {
+                  "sd_frequency": "1m",
+                  "sd_result_file": "/tmp/cwagent_ecs_auto_sd.yaml",
+                  "docker_label": {
+                    "sd_port_label": "ECS_PROMETHEUS_EXPORTER_PORT",
+                    "sd_metrics_path_label":"PROMETHEUS_METRICS_PATH_LABEL"
+                    "sd_job_name_label": "ECS_PROMETHEUS_JOB_NAME"
+                  },
+                  "task_definition_list": [
+                    {
+                      "sd_task_definition_arn_pattern": ".*:task-definition/friends-capstone-crud-api-ecs-task*",
+                      "sd_metrics_ports": "5000",
+                      "sd_metrics_path": "/api/metrics",
+                      "sd_container_name_pattern":"pydbcapstone"
+                    }
+                  ]
+                },
+              }
+            },
+            "force_flush_interval": 5
+          }
+        }
+  CWAgentECSExecutionRole:
+    Type: AWS::IAM::Role
+    Condition: CreateRoles
+    Properties:
+      RoleName: !Sub ${ExecutionRoleName}-${AWS::Region}
+      Description: Allows ECS container agent to make calls to the Amazon ECS API on your behalf.
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: ecs-tasks.amazonaws.com
+            Action: sts:AssumeRole
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy
+        - arn:aws:iam::aws:policy/CloudWatchAgentServerPolicy
+      Policies:
+        - PolicyName: ECSSSMInlinePolicy
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action:
+                  - ssm:GetParameters
+                Resource: 
+                  !Sub 'arn:aws:ssm:${AWS::Region}:${AWS::AccountId}:parameter/AmazonCloudWatch-*'
+  CWAgentECSTaskRole:
+    Type: AWS::IAM::Role
+    Condition: CreateRoles
+    DependsOn: CWAgentECSExecutionRole
+    Properties:
+      RoleName: !Sub ${TaskRoleName}-${AWS::Region}
+      Description: Allows ECS tasks to call AWS services on your behalf.
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: ecs-tasks.amazonaws.com
+            Action: sts:AssumeRole
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/CloudWatchAgentServerPolicy
+      Policies:
+        - PolicyName: ECSServiceDiscoveryInlinePolicy
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action:
+                  - ecs:DescribeTasks
+                  - ecs:ListTasks
+                  - ecs:DescribeContainerInstances
+                Resource: "*"
+                Condition:
+                  ArnEquals:
+                    ecs:cluster:
+                      !Sub 'arn:${AWS::Partition}:ecs:${AWS::Region}:${AWS::AccountId}:cluster/${ECSClusterName}'
+              - Effect: Allow
+                Action:
+                  - ec2:DescribeInstances
+                  - ecs:DescribeTaskDefinition
+                Resource: "*"
+  ECSCWAgentTaskDefinition:
+    Type: 'AWS::ECS::TaskDefinition'
+    DependsOn:
+      - PrometheusConfigSSMParameter
+      - CWAgentConfigSSMParameter
+    Properties:
+      Family: !Sub 'cwagent-prometheus-${ECSClusterName}-${ECSLaunchType}-awsvpc'
+      TaskRoleArn: !If [CreateRoles, !GetAtt CWAgentECSTaskRole.Arn, !Sub 'arn:${AWS::Partition}:iam::${AWS::AccountId}:role/${TaskRoleName}']
+      ExecutionRoleArn: !If [CreateRoles, !GetAtt CWAgentECSExecutionRole.Arn, !Sub 'arn:${AWS::Partition}:iam::${AWS::AccountId}:role/${ExecutionRoleName}']
+      NetworkMode: awsvpc
+      ContainerDefinitions:
+        - Name: cloudwatch-agent-prometheus
+          Image: amazon/cloudwatch-agent:1.248913.0-prometheus
+          Essential: true
+          MountPoints: []
+          PortMappings: []
+          Environment: []
+          Secrets:
+            - Name: PROMETHEUS_CONFIG_CONTENT
+              ValueFrom: !Sub 'AmazonCloudWatch-PrometheusConfigName-${ECSClusterName}-${ECSLaunchType}-awsvpc'
+            - Name: CW_CONFIG_CONTENT
+              ValueFrom: !Sub 'AmazonCloudWatch-CWAgentConfig-${ECSClusterName}-${ECSLaunchType}-awsvpc'
+          LogConfiguration:
+            LogDriver: awslogs
+            Options:
+              awslogs-create-group: 'True'
+              awslogs-group: "/ecs/ecs-cwagent-prometheus"
+              awslogs-region: !Ref AWS::Region
+              awslogs-stream-prefix: !Sub 'ecs-${ECSLaunchType}-awsvpc'
+      RequiresCompatibilities:
+        - !Ref ECSLaunchType
+      Cpu: '512'
+      Memory: '1024'
+  ECSCWAgentService:
+    Type: AWS::ECS::Service
+    Properties:
+      Cluster: !Ref ECSClusterName
+      DesiredCount: 1
+      LaunchType: !Ref ECSLaunchType
+      SchedulingStrategy: REPLICA
+      ServiceName: !Sub 'cwagent-prometheus-replica-service-${ECSLaunchType}-awsvpc'
+      TaskDefinition: !Ref ECSCWAgentTaskDefinition
+      NetworkConfiguration:
+        AwsvpcConfiguration:
+          AssignPublicIp: !If [AssignPublicIp, ENABLED, DISABLED]
+          SecurityGroups:
+            - !Ref SecurityGroupID
+          Subnets:
+            - !Ref SubnetID

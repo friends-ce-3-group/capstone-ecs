@@ -1,0 +1,37 @@
+name: Deploy Prom CW Agent
+
+on:
+  push:
+    paths:
+      - mod_prometheus/install-prometheus-collector.yml
+      - mod_prometheus/prometheus-install.sh
+
+  workflow_dispatch:
+
+env:
+  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+  # ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+
+jobs:
+
+  deploy:
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: ./mod_prometheus
+
+    steps:
+        - uses: actions/checkout@v4
+          with:
+            fetch-depth: 1
+    
+        - name: make script executable
+          run: |
+            sed -i -e 's/\r$//' prometheus-install.sh
+            sudo chmod u+x prometheus-install.sh
+            ls -la
+
+        - name: run cloudformation script
+          run: ./prometheus-install.sh
