@@ -193,7 +193,7 @@ Resources:
       DesiredCount: 1
       LaunchType: !Ref ECSLaunchType
       SchedulingStrategy: REPLICA
-      ServiceName: !Sub 'cwagent-prometheus-replica-service-${ECSLaunchType}-awsvpc'
+      ServiceName: !Sub 'cwagent-prometheus-${ECSClusterName}'
       TaskDefinition: !Ref ECSCWAgentTaskDefinition
       NetworkConfiguration:
         AwsvpcConfiguration:
