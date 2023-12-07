@@ -18,6 +18,14 @@ resource "aws_security_group" "ecs_tasks" {
     security_groups = [var.alb_security_group_id]
   }
 
+  # allow CW Prometheus agent to scrape metrics from CRUD API service
+  ingress {
+    protocol        = "-1"
+    from_port       = 0
+    to_port         = 65535
+    self            = true
+  }
+
   egress {
     protocol    = "-1"
     from_port   = 0
