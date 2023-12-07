@@ -10,4 +10,4 @@
 
 - https://medium.com/cloud-native-daily/configuring-fargate-custom-application-metrics-in-cloudwatch-using-prometheus-6340530a701b
 
-
+- https://github.com/aws-samples/one-observability-demo/blob/main/PetAdoptions/cdk/pet_stack/resources/cwagent-ecs-prometheus-metric-for-awsvpc.yaml
