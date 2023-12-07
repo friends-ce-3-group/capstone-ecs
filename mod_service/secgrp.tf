@@ -22,7 +22,7 @@ resource "aws_security_group" "ecs_tasks" {
   ingress {
     protocol        = "-1"
     from_port       = 0
-    to_port         = 65535
+    to_port         = 0
     self            = true
   }
 
