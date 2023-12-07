@@ -26,7 +26,8 @@ resource "aws_ecs_task_definition" "service" {
       "dockerLabels": {
           "ECS_PROMETHEUS_EXPORTER_PORT":"${var.service_app_port}",
           "ECS_PROMETHEUS_METRICS_PATH":"/api/metrics",
-          "ECS_PROMETHEUS_JOB_NAME":"FRIENDSCLUSTERMONITORING"
+          "ECS_PROMETHEUS_JOB_NAME":"FRIENDSCLUSTERMONITORING",
+          "FLASK_EMF_METRICS":"true"
       },
       "logConfiguration": {
         "logDriver": "awslogs",
