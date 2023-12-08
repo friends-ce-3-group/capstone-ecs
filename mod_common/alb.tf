@@ -32,6 +32,13 @@ resource "aws_s3_bucket" "alb_log" {
   }
 }
 
+resource "aws_s3_bucket_versioning" "bucket_versioning" {
+  bucket = aws_s3_bucket.alb_log.id
+  versioning_configuration {
+    status = "Enabled"
+  }
+}
+
 locals {
   elb_account_id = "797873946194" # US West (Oregon). See https://docs.aws.amazon.com/elasticloadbalancing/latest/application/enable-access-logging.html
 }
