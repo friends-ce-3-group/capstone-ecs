@@ -1,12 +1,4 @@
 #!/bin/bash
-export AWS_DEFAULT_REGION=us-west-2
-export ECS_CLUSTER_NAME=friends-capstone-cluster
-export ECS_CLUSTER_SECURITY_GROUP=sg-0be3f39c43f516f24
-export ECS_CLUSTER_SUBNET=subnet-08770f0364536c234
-export CREATE_IAM_ROLES=True
-export ECS_LAUNCH_TYPE=FARGATE
-
-
 aws cloudformation deploy --stack-name CWAgent-Prometheus-ECS-${ECS_CLUSTER_NAME}-${ECS_LAUNCH_TYPE}-awsvpc \
     --template-file install-prometheus-collector.yml \
     --parameter-overrides ECSClusterName=${ECS_CLUSTER_NAME} \
