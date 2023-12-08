@@ -10,7 +10,7 @@ data "template_file" "cloudfmn_template" {
   }
 }
 
-resource "local_file" "pycode" {
+resource "local_file" "cloudfmn_exec" {
   content  = data.template_file.cloudfmn_template.rendered
   filename = "${path.module}/prometheus-install.sh"
 }
