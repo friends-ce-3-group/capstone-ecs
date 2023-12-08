@@ -1,4 +1,4 @@
-name: Deploy Prom CW Agent
+name: Set Up Prometheus CW Agent
 
 on:
   push:
