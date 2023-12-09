@@ -27,6 +27,7 @@ resource "aws_cloudwatch_event_target" "event_target" {
     enable_ecs_managed_tags = true
     network_configuration {
       subnets          = var.private_subnets
+      security_groups  = var.ecs_task_security_group_ids
       assign_public_ip = true
     }
   }

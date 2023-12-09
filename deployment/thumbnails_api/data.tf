@@ -33,3 +33,10 @@ data "aws_iam_role" "ecs_task_role" {
 data "aws_iam_role" "ecs_task_execution_role" {
   name = "friends-capstone-ecsTaskExecutionRole"
 }
+
+data "aws_security_groups" "ecs_task_security_group" {
+  tags = {
+    name    = "${var.proj_name}-crud-api-sg-ecstask",
+    project = "${var.proj_name}"
+  }
+}
