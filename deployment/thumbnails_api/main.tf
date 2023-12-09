@@ -15,8 +15,9 @@ module "thumbnails_api" {
   region = var.region
 
   # Networking
-  ecs_cluster_arn = data.aws_ecs_cluster.ecs_cluster.arn
-  private_subnets = data.aws_subnets.pvt_subnets.ids
+  ecs_cluster_arn             = data.aws_ecs_cluster.ecs_cluster.arn
+  private_subnets             = data.aws_subnets.pvt_subnets.ids
+  ecs_task_security_group_ids = data.aws_security_groups.ecs_task_security_group.id
 
   # IAM policies to attach to task
   # ecs_task_role               = data.ecs_task_role

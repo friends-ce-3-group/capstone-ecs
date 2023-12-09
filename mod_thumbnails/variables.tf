@@ -57,3 +57,8 @@ variable "ecs_task_execution_role_arn" {
   type        = string
   description = "execution role arn for ecs tasks to use"
 }
+
+variable "ecs_task_security_group_ids" {
+  type        = list(string)
+  description = "ID of the ecs task security group. For attaching security group rules."
+}
