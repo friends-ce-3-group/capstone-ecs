@@ -111,7 +111,7 @@ Resources:
                       "label_matcher": "^true$",
                       "dimensions": [["ClusterName","TaskDefinitionFamily"]],
                       "metric_selectors": [
-                        "^flask_http_request_duration_seconds_bucket.*$"
+                        "^flask_http_request_duration_seconds_bucket$"
                       ]
                     }
                   ]
