@@ -70,4 +70,4 @@ jobs:
             ls -la
 
         - name: run cloudformation script
-          run: ./prometheus-install.sh
+          run: ./$INSTALL_SCRIPT

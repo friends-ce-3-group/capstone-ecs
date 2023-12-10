@@ -1,6 +1,7 @@
 #!/bin/bash
 action=#{ACTION}#
-if [ "$action" == "Apply" ]
+if [ "$action" == "Apply" ] 
+then
     aws cloudformation deploy --stack-name CWAgent-Prometheus-ECS-${ECS_CLUSTER_NAME}-${ECS_LAUNCH_TYPE}-awsvpc \
         --template-file install-prometheus-collector.yml \
         --parameter-overrides ECSClusterName=${ECS_CLUSTER_NAME} \
