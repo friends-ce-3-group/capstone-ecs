@@ -1,12 +1,18 @@
 #!/bin/bash
-aws cloudformation deploy --stack-name CWAgent-Prometheus-ECS-${ECS_CLUSTER_NAME}-${ECS_LAUNCH_TYPE}-awsvpc \
-    --template-file install-prometheus-collector.yml \
-    --parameter-overrides ECSClusterName=${ECS_CLUSTER_NAME} \
-                CreateIAMRoles=${CREATE_IAM_ROLES} \
-                ECSLaunchType=${ECS_LAUNCH_TYPE} \
-                SecurityGroupID=${ECS_CLUSTER_SECURITY_GROUP} \
-                SubnetID=${ECS_CLUSTER_SUBNET} \
-                TaskRoleName=Prometheus-TaskRole-${ECS_CLUSTER_NAME} \
-                ExecutionRoleName=Prometheus-ExecutionRole-${ECS_CLUSTER_NAME} \
-    --capabilities CAPABILITY_NAMED_IAM \
-    --region ${AWS_DEFAULT_REGION} 
+action=#{ACTION}#
+if [ "$action" == "Apply" ]
+    aws cloudformation deploy --stack-name CWAgent-Prometheus-ECS-${ECS_CLUSTER_NAME}-${ECS_LAUNCH_TYPE}-awsvpc \
+        --template-file install-prometheus-collector.yml \
+        --parameter-overrides ECSClusterName=${ECS_CLUSTER_NAME} \
+                    CreateIAMRoles=${CREATE_IAM_ROLES} \
+                    ECSLaunchType=${ECS_LAUNCH_TYPE} \
+                    SecurityGroupID=${ECS_CLUSTER_SECURITY_GROUP} \
+                    SubnetID=${ECS_CLUSTER_SUBNET} \
+                    TaskRoleName=Prometheus-TaskRole-${ECS_CLUSTER_NAME} \
+                    ExecutionRoleName=Prometheus-ExecutionRole-${ECS_CLUSTER_NAME} \
+        --capabilities CAPABILITY_NAMED_IAM \
+        --region ${AWS_DEFAULT_REGION} 
+else
+    aws cloudformation delete-stack --stack-name CWAgent-Prometheus-ECS-${ECS_CLUSTER_NAME}-${ECS_LAUNCH_TYPE}-awsvpc \
+        --region ${AWS_DEFAULT_REGION} 
+fi
