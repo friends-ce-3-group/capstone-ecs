@@ -1,11 +1,11 @@
 name: Set Up Prometheus CW Agent
 
 on:
-  push:
-    paths:
-      - mod_prometheus/install-prometheus-collector.yml
-      - mod_prometheus/prometheus-install.sh.in
-      - deployment/prometheus/*
+  # push:
+  #   paths:
+  #     - mod_prometheus/install-prometheus-collector.yml
+  #     - mod_prometheus/prometheus-install.sh.in
+  #     - deployment/prometheus/*
 
   workflow_dispatch:
     inputs:
