@@ -56,7 +56,7 @@ jobs:
 
         - uses: cschleiden/replace-tokens@v1
           with:
-            files: '["${{ github.workspace }}/deployment/prometheus/$INSTALL_SCRIPT"]'
+            files: '["${{ github.workspace }}/deployment/prometheus/prometheus-install.sh"]'
           env:
             ACTION: ${{ github.event.inputs.deployment }}
 
