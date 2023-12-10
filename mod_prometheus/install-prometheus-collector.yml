@@ -109,22 +109,9 @@ Resources:
                     {
                       "source_labels": ["FLASK_EMF_METRICS"],
                       "label_matcher": "^true$",
-                      "dimensions": [["ClusterName","TaskDefinitionFamily","instance"]],
+                      "dimensions": [["ClusterName","TaskDefinitionFamily"]],
                       "metric_selectors": [
-                        "^flask_http_request_duration_seconds_bucket.*$",
-                        "^flask_http_request_exceptions_created$",
-                        "^flask_http_request_exceptions_total$",
-                        "^flask_http_request_(created|total)$",
-                        "^flask_http_request_duration_seconds_(created|count)$",
-                        "^process_max_fds$",
-                        "^process_open_fds$",
-                        "^process_cpu_seconds_total$",
-                        "^process_start_time_seconds$",
-                        "^python_gc_objects_uncollectable_total$",
-                        "^python_gc_objects_collected_total$",
-                        "^python_gc_collections_total$",
-                        "^process_virtual_memory_bytes$",
-                        "^process_resident_memory_bytes$"
+                        "^flask_http_request_duration_seconds_bucket.*$"
                       ]
                     }
                   ]
