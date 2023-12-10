@@ -55,10 +55,13 @@ jobs:
 
         - uses: cschleiden/replace-tokens@v1
           with:
-            files: '["./prometheus-install.sh"]'
+            files: '["prometheus-install.sh"]'
           env:
             ACTION: ${{ github.event.inputs.deployment }}
 
+        - name: show installation script
+          run : cat prometheus-install.sh
+  
         - name: make cloudformation script an executable
           run: |
             sed -i -e 's/\r$//' prometheus-install.sh
