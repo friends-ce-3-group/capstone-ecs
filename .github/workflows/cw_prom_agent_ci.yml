@@ -20,6 +20,7 @@ env:
   AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
   AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
   # ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+  INSTALL_SCRIPT: prometheus-install.sh
 
 jobs:
 
@@ -55,17 +56,17 @@ jobs:
 
         - uses: cschleiden/replace-tokens@v1
           with:
-            files: '["prometheus-install.sh"]'
+            files: '["${{ github.workspace }}/deployment/prometheus/$INSTALL_SCRIPT"]'
           env:
             ACTION: ${{ github.event.inputs.deployment }}
 
         - name: show installation script
-          run : cat prometheus-install.sh
+          run : cat $INSTALL_SCRIPT
   
         - name: make cloudformation script an executable
           run: |
-            sed -i -e 's/\r$//' prometheus-install.sh
-            sudo chmod u+x prometheus-install.sh
+            sed -i -e 's/\r$//' $INSTALL_SCRIPT
+            sudo chmod u+x $INSTALL_SCRIPT
             ls -la
 
         - name: run cloudformation script
