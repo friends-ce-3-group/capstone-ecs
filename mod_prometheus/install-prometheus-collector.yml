@@ -109,7 +109,7 @@ Resources:
                     {
                       "source_labels": ["FLASK_EMF_METRICS"],
                       "label_matcher": "^true$",
-                      "dimensions": [["ClusterName","TaskDefinitionFamily"]],
+                      "dimensions": [["ClusterName","TaskDefinitionFamily","instance"]],
                       "metric_selectors": [
                         "^flask_http_request_duration_seconds_bucket",
                         "^flask_http_request_exceptions_created$",
